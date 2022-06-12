@@ -1,7 +1,7 @@
 import { readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-export const list = async () => {
+export const ls = async () => {
   try {
     const pathToSourceDir = resolve(process.cwd());
     const items = await readdir(pathToSourceDir);

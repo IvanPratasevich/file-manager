@@ -2,7 +2,7 @@ import { parseArgs } from './cli/args.js';
 import { homedir } from 'os';
 import * as readline from 'node:readline';
 import { calculateHash } from './hash/calcHash.js';
-import { list } from './fs/list.js';
+import { ls } from './fs/ls.js';
 import { currentDirectory } from './currentDirectory/currentDirectory.js';
 import { cd } from './cd/cd.js';
 import { up } from './up/up.js';
@@ -46,7 +46,7 @@ const fileManager = async () => {
         break;
       case 'ls':
         if (parameters.length === 0) {
-          await list();
+          await ls();
           currentDirectory();
         } else {
           process.stdout.write(`Invalid input\n`);
