@@ -97,8 +97,12 @@ const fileManager = async () => {
         }
         break;
       case 'cp':
-        await cp(parameters);
-        currentDirectory();
+        if (parameters.length === 2) {
+          await cp(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'mv':
         if (parameters.length === 2) {
