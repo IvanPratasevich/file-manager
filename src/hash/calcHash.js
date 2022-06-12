@@ -1,26 +1,19 @@
-import { join } from 'node:path';
-import { exists, getDirname } from '../additions/additions.js';
 import { createReadStream } from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { rejects } from 'node:assert';
+import { resolve } from 'node:path';
 
-export const calculateHash = async () => {
+export const calculateHash = async (parameters) => {
   try {
     const { createHash } = await import('crypto');
-    const __dirname = await getDirname(import.meta.url);
-    const pathToSourceFile = join(__dirname, 'files', 'fileToCalculateHashFor.txt');
-    const isSourceFileExists = await exists(pathToSourceFile);
-    if (!isSourceFileExists) {
-      throw new Error('No file in directory!');
-    }
-    const readData = await readFile(pathToSourceFile);
-    const hash = createHash('sha256').update(readData).digest('hex');
-    return hash;
+    const pathToSourceFile = resolve(parameters[0]);
+    const hash = createHash('sha256');
+    const readStream = createReadStream(pathToSourceFile);
+    return new Promise((resolve) => {
+      readStream.on('data', (data) => hash.update(data));
+      readStream.on('end', () => resolve(hash.digest('hex')));
+    });
   } catch (error) {
-    process.stderr.write(error.message);
-    process.exit(1);
+    console.log('Operation failed!');
   }
 };
 
-console.log('\x1b[36m', await calculateHash(), '\x1b[0m');
 

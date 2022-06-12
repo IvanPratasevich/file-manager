@@ -1,26 +1,22 @@
 import { exists, getDirname } from '../additions/additions.js';
 import { join } from 'node:path';
-import { createUnzip } from 'node:zlib';
+import { createBrotliDecompress } from 'node:zlib';
 import { createWriteStream, createReadStream } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
+import { sep, resolve } from 'node:path';
 
-export const decompress = async () => {
+export const decompress = async (parameters) => {
   try {
-    const __dirname = await getDirname(import.meta.url);
-    const pathToSrcFile = join(__dirname, 'files', 'archive.gz');
-    const pathToDestinationFile = join(__dirname, 'files', 'fileToCompress.txt');
-    const isSourceFileExists = await exists(pathToSrcFile);
-    if (!isSourceFileExists) {
-      throw new Error('No file in directory!');
-    }
+    const pathToSrcFile = resolve(parameters[0]);
+    const sourceFile = pathToSrcFile.split(sep).pop().replace('.br', '');
+    const pathToDestination = resolve(resolve(parameters[1]), sourceFile);
     const input = createReadStream(pathToSrcFile);
-    const output = createWriteStream(pathToDestinationFile);
-    const unzip = createUnzip();
+    const output = createWriteStream(pathToDestination);
+    const unzip = createBrotliDecompress();
     await pipeline(input, unzip, output);
-    console.log('Unzipped successfully!');
+    console.log('Uncompressed successfully!');
   } catch (error) {
-    process.stderr.write('Error:' + ' ' + error.message);
-    process.exit(1);
+    console.log('Operation failed!');
   }
 };
-decompress();
+

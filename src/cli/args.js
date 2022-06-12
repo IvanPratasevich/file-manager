@@ -1,13 +1,13 @@
 export const parseArgs = () => {
-  const result = [];
-  const args = process.argv.splice(2);
-  let counter = args.length;
-  for (let index = 0; index < counter; index++) {
-    result.push(args.splice(0, 2).join(' is ').replace('--', ''));
-    counter--;
-  }
-  console.log(result.join(', '));
+  const argsArr = process.argv.splice(2);
+  let username;
+  argsArr.forEach((el) => {
+    if (el.replace('--', '').startsWith('username')) {
+      username = el.split('=')[1];
+    } else{
+      username = 'Anonymous';
+    }
+  });
+  return username;
 };
-
-parseArgs();
 

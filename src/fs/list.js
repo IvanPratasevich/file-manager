@@ -1,28 +1,13 @@
 import { readdir } from 'node:fs/promises';
-import { join } from 'node:path';
-import { exists, getDirname } from '../additions/additions.js';
+import { resolve } from 'node:path';
 
 export const list = async () => {
   try {
-    const __dirname = await getDirname(import.meta.url);
-    const pathToSourceDir = join(__dirname, 'files');
-    const isSourceDirExists = await exists(pathToSourceDir);
-    if (!isSourceDirExists) {
-      throw new Error('FS operation failed');
-    }
-    const items = await readdir(pathToSourceDir, { withFileTypes: true });
-    for (const item of items) {
-      if (!item.isDirectory()) {
-        console.log('\x1b[36m', item.name, '\x1b[0m');
-      } else {
-        console.log('\x1b[36m', item.name + '(folder)', '\x1b[0m');
-      }
-    }
+    const pathToSourceDir = resolve(process.cwd());
+    const items = await readdir(pathToSourceDir);
+    console.log(items);
   } catch (error) {
-    process.stderr.write(error.message);
-    process.exit(1);
+    console.log('Operation failed!');
   }
 };
-
-list();
 
