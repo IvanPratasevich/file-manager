@@ -32,65 +32,117 @@ const fileManager = async () => {
     const parameters = lineArr.slice(1);
     switch (command) {
       case 'hash':
-        await calculateHash(parameters).then((result) => {
-          process.stdout.write(`${result}\n`);
-        });
-        currentDirectory();
+        if (parameters.length === 1) {
+          await calculateHash(parameters).then((result) => {
+            process.stdout.write(`${result}\n`);
+          });
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case '.close':
         rl.close();
         break;
       case 'ls':
-        await list();
-        currentDirectory();
+        if (parameters.length === 0) {
+          await list();
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'cd':
-        await cd(parameters);
-        currentDirectory();
+        if (parameters.length === 1) {
+          await cd(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'up':
-        await up();
-        currentDirectory();
+        if (parameters.length === 0) {
+          await up();
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'cat':
-        await cat(parameters).then((result) => {
-          process.stdout.write(result);
-        });
-        currentDirectory();
+        if (parameters.length === 1) {
+          await cat(parameters).then((result) => {
+            process.stdout.write(result);
+          });
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'add':
-        await add(parameters).then((result) => {
-          process.stdout.write(result);
-        });
-        currentDirectory();
+        if (parameters.length === 1) {
+          await add(parameters).then((result) => {
+            process.stdout.write(result);
+          });
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'rn':
-        await rn(parameters);
-        currentDirectory();
+        if (parameters.length === 2) {
+          await rn(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'cp':
         await cp(parameters);
         currentDirectory();
         break;
       case 'mv':
-        await mv(parameters);
-        currentDirectory();
+        if (parameters.length === 2) {
+          await mv(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'rm':
-        await rm(parameters);
-        currentDirectory();
+        if (parameters.length === 1) {
+          await rm(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'os':
-        await os(parameters);
-        currentDirectory();
+        if (parameters.length === 1 && typeof parameters !== 'undefined') {
+          if (parameters[0].startsWith('--')) {
+            await os(parameters);
+            currentDirectory();
+          } else {
+            process.stdout.write(`Invalid input\n`);
+          }
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'compress':
-        await compress(parameters);
-        currentDirectory();
+        if (parameters.length === 2) {
+          await compress(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       case 'decompress':
-        await decompress(parameters);
-        currentDirectory();
+        if (parameters.length === 2) {
+          await decompress(parameters);
+          currentDirectory();
+        } else {
+          process.stdout.write(`Invalid input\n`);
+        }
         break;
       default:
         process.stdout.write(`Invalid input\n`);

@@ -17,6 +17,7 @@ export const os = async (parameters) => {
         });
         const result = await Promise.all(arr);
         console.log(result);
+        break;
       case '--homedir':
         console.log('Home directory:' + ' ' + homedir());
         break;

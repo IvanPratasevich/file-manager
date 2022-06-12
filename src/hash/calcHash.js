@@ -10,10 +10,10 @@ export const calculateHash = async (parameters) => {
     return new Promise((resolve) => {
       readStream.on('data', (data) => hash.update(data));
       readStream.on('end', () => resolve(hash.digest('hex')));
+      readStream.on('error', (error) => resolve('Operation failed!'));
     });
   } catch (error) {
     console.log('Operation failed!');
   }
 };
-
 

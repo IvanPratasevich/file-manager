@@ -6,11 +6,10 @@ import { unlink } from 'node:fs/promises';
 export const mv = async (parameters) => {
   try {
     const pathToFile = resolve(parameters[0]);
-    let pathToDest = parameters[1];
     const sourceFile = pathToFile.split(sep).pop();
-    pathToDest = resolve(pathToNewDirectory, sourceFile);
+    const pathToDest = resolve(parameters[1], sourceFile);
     const readStream = createReadStream(pathToFile);
-    const writeStream = createWriteStream(pathToNewDirectory);
+    const writeStream = createWriteStream(pathToDest);
     await pipeline(readStream, writeStream);
     await unlink(pathToFile);
   } catch (error) {
