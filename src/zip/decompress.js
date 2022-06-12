@@ -12,9 +12,10 @@ export const decompress = async (parameters) => {
     const isSourceFileExists = await exists(pathToSrcFile);
     if (!isSourceFileExists) {
       console.log('There is no file in directory!');
+      console.log('Operation failed!');
       return;
     }
-    const input = createReadStream(pathToSrcFile);
+    const input = createReadStream(pathToSrcFile, { flags: 'r' });
     const output = createWriteStream(pathToDestination, { flags: 'wx' });
     const unzip = createBrotliDecompress();
     await pipeline(input, unzip, output);

@@ -11,7 +11,7 @@ export const calculateHash = async (parameters) => {
     if (!isSourceFileExists) {
       return 'There is no file in directory!\nOperation failed!';
     }
-    const readStream = createReadStream(pathToSourceFile);
+    const readStream = createReadStream(pathToSourceFile, { flags: 'r' });
     return new Promise((resolve) => {
       readStream.on('data', (data) => hash.update(data));
       readStream.on('end', () => resolve(hash.digest('hex')));

@@ -12,6 +12,7 @@ export const mv = async (parameters) => {
     const isSourceFileExists = await exists(pathToFile);
     if (!isSourceFileExists) {
       console.log('There is no file in directory!');
+      console.log('Operation failed!');
       return;
     }
     const readStream = createReadStream(pathToFile, { flags: 'r' });
